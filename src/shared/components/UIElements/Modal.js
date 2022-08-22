@@ -1,3 +1,4 @@
+import React from "react";
 import Backdrop from "../UIElements/Backdrop";
 import "./Modal.css";
 import { CSSTransition } from "react-transition-group";
