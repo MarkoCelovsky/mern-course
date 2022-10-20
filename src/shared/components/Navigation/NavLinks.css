@@ -14,7 +14,8 @@
   margin: 1rem;
 }
 
-.nav-links a {
+.nav-links a,
+.navlinks .btn {
   border: 1px solid transparent;
   color: #292929;
   text-decoration: none;
@@ -22,8 +23,17 @@
   padding: 0.5rem;
 }
 
+.logout-btn {
+  font-weight: 600 !important;
+}
+.logout-footer {
+  text-align: end;
+}
+
 .nav-links a:hover,
 .nav-links a:active,
+.nav-links .btn:hover,
+.nav-links .btn:active,
 .nav-links a.active {
   background: #f8df00;
   /* border-color: #292929; */
@@ -58,7 +68,8 @@
     margin: 0 0.5rem;
   }
 
-  .nav-links a {
+  .nav-links a,
+  .nav-links .btn {
     color: white;
     text-decoration: none;
   }
