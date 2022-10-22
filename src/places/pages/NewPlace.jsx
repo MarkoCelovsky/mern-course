@@ -29,7 +29,7 @@ const NewPlace = () => {
 
   const placeSubmitHandler = (evt) => {
     evt.preventDefault();
-    console.log(formState.inputs);
+    console.table(formState.inputs);
   };
 
   return (
