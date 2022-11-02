@@ -8,23 +8,40 @@ import PlaceList from "../components/PlaceList";
 const UserPlaces = () => {
   const userId = useParams().userId;
   const { fetchData, error, isLoading, clearError } = useFetch();
-  const [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState();
 
   useEffect(() => {
     const getUserPlaces = async () => {
-      const { places } = await fetchData(
-        `http://localhost:8080/api/users/${userId}`
-      );
-      setPlaces(places);
+      try {
+        const { places } = await fetchData({
+          url: `http://localhost:8080/api/places/user/${userId}`,
+          method: "get",
+        });
+        setPlaces(places);
+      } catch (error) {
+        console.error(error);
+      }
     };
     getUserPlaces();
   }, [fetchData]);
 
+  const placeDeleteHandler = (placeId) => {
+    setPlaces((currPlaces) =>
+      currPlaces.filter((place) => place.id !== placeId)
+    );
+  };
+
   return (
     <>
       <ErrorModal onClear={clearError} error={error} />
-      {isLoading && <LoadingSpinner />}
-      <PlaceList items={places} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && places && (
+        <PlaceList items={places} onDeletePlace={placeDeleteHandler} />
+      )}
     </>
   );
 };

@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
+import { useFetch } from "../../hooks/useFetch";
 import Button from "../../shared/components/FormElements/Button";
 import Card from "../../shared/components/UIElements/Card";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import Map from "../../shared/components/UIElements/Map";
 import Modal from "../../shared/components/UIElements/Modal";
 import { AuthContext } from "../../shared/context/auth-context";
@@ -9,7 +12,8 @@ import "./PlaceItem.css";
 const PlaceItem = (props) => {
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const { isLoggedIn } = useContext(AuthContext);
+  const { userId } = useContext(AuthContext);
+  const { clearError, error, isLoading, fetchData } = useFetch();
 
   const openMapHandler = () => setShowMap(true);
 
@@ -17,14 +21,29 @@ const PlaceItem = (props) => {
 
   const showDeleteWarningHandler = () => setShowConfirmModal(true);
 
-  const confirmDeleteHandler = () => {
-    setShowConfirmModal(false);
-    window.alert("Deleting");
-  };
   const cancelDeleteModalHandler = () => setShowConfirmModal(false);
+
+  const confirmDeleteHandler = async () => {
+    setShowConfirmModal(false);
+    try {
+      await fetchData({
+        url: `http://localhost:8080/api/places/${props.id}`,
+        method: "delete",
+      });
+      props.onDeletePlace(props.id);
+    } catch (error) {}
+  };
 
   return (
     <>
+      <ErrorModal onClear={clearError} error={error} />
+
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+
       <Modal
         onCancel={closeMapHandler}
         header={props.address}
@@ -70,7 +89,7 @@ const PlaceItem = (props) => {
             <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
             </Button>
-            {isLoggedIn && (
+            {userId === props.creatorId && (
               <>
                 <Button to={`/places/${props.id}`}>EDIT</Button>
                 <Button danger onClick={showDeleteWarningHandler}>

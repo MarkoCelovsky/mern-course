@@ -4,15 +4,21 @@ import Modal from "./Modal";
 import Button from "../FormElements/Button";
 import "./ErrorModal.css";
 const ErrorModal = ({ onClear, error }) => {
+  let err;
+  if (error) {
+    err = error.response.data.message;
+  }
+
   return (
     <Modal
       onCancel={onClear}
       header="An Error Occurred!"
-      show={!!error}
+      headerClass="error__header"
+      show={!!err}
       footer={<Button onClick={onClear}>Okay</Button>}
       footerClass="float-right"
     >
-      <p>{error}</p>
+      <p>{err}</p>
     </Modal>
   );
 };

@@ -2,3 +2,6 @@
   display: flex;
   justify-content: flex-end;
 }
+.error__header {
+  background-color: #940132;
+}

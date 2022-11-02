@@ -7,7 +7,7 @@ import "./NavLinks.css";
 
 const NavLinks = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, userId } = useContext(AuthContext);
   const openModalHandler = () => {
     setShowModal(true);
   };
@@ -21,7 +21,7 @@ const NavLinks = (props) => {
         </li>
         {isLoggedIn && (
           <li>
-            <NavLink to="/u1/places">MY PLACES</NavLink>
+            <NavLink to={`/${userId}/places`}>MY PLACES</NavLink>
           </li>
         )}
         {isLoggedIn && (
